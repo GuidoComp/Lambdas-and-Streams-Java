@@ -1,6 +1,11 @@
 package com.debuggeando_ideas.code_challenge;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,29 +18,38 @@ interface PerformOperation {
 }
 
 class CodeImpl {
-
     //Es impar? impar return true - par return false
     public static PerformOperation isOdd() {
-        return null;
+        return n -> n % 2 == 1;
     }
 
     //Es un numero primo?
     public static PerformOperation isPrime() {
-        return null;
+        return n -> n > 1 && IntStream.range(2, n).noneMatch(i -> n % i == 0);
     }
 
     //Es un numero palindromo? 98589
     public static PerformOperation isPalindrome() {
-        return null;
+        return n -> {
+            String stringNumeros = String.valueOf(n);
+            String[] arrayNumeros = stringNumeros.split("");
+            boolean matches = true;
+            int index = 0;
+            int lastElement = arrayNumeros.length - 1;
+            while(matches && index < arrayNumeros.length) {
+                matches = arrayNumeros[index].equals(arrayNumeros[lastElement]);
+                index++;
+                lastElement--;
+                if (index == lastElement) break;
+            }
+            return matches;
+        };
     }
 }
 
-/*public class CodeChallenge {
-
-}
+class CodeChallengeTest {
     @Test
     public void startTest() {
-
         PerformOperation isOdd = CodeImpl.isOdd();
         PerformOperation isPrime = CodeImpl.isPrime();
         PerformOperation isPalindrome = CodeImpl.isPalindrome();
@@ -44,8 +58,8 @@ class CodeImpl {
         int[] isPrimeCases = {2,31,97,42,98};
         int[] isPalindromeCases = {54322345,710101017,888,7848729,783483002};
 
-    
-        assertAll( "Test isOdd" ,
+
+        assertAll( "Test isOdd",
                 () -> assertTrue(isOdd.check(isOddCases[0])),
                 () -> assertTrue(isOdd.check(isOddCases[1])),
                 () -> assertTrue(isOdd.check(isOddCases[2])),
@@ -69,12 +83,11 @@ class CodeImpl {
                () -> assertFalse(isPalindrome.check(isPalindromeCases[4]))
        );
     }
-}*/
+}
 
 
 // Descomenta para probar con main method
 public class CodeChallenge {
-
     public static void main(String[] args) {
         PerformOperation isOdd = CodeImpl.isOdd();
         PerformOperation isPrime = CodeImpl.isPrime();
